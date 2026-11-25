@@ -1,0 +1,25 @@
+<div class="app">
+  <div class="scrim" id="scrim"></div>
+  <aside class="side">
+    <div class="brand"><div class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4zM3 8v8l9 4 9-4V8M12 12v8"/></svg></div><div><b>Plant Daily Reports</b><span>Daily numbers from PDF</span></div></div>
+    <nav class="nav" id="nav" aria-label="Reports"></nav>
+    <p class="sfoot">Saved in this browser only. Download Excel or PDF to keep a copy elsewhere.</p>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <button class="burger" id="burger" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <h1 id="ttl"></h1>
+      <div class="datebar" id="datebar">
+        <button class="ib" id="prev" title="Previous day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <label class="dpick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span id="dtxt"></span><input type="date" id="dinp" aria-label="Choose date"></label>
+        <button class="ib" id="next" title="Next day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+        <span class="vr"></span>
+        <button class="today" id="today">Today</button>
+      </div>
+    </header>
+    <main class="content" id="view"></main>
+  </div>
+</div>
+<div class="modal" id="modal"><div class="box"><h3 id="mtitle">Edit row</h3><div id="mform"></div></div></div>
+<div class="modal" id="pv"><div class="box wide"><h3 id="pvt"></h3><div class="pvb" id="pvb"></div><div class="actions pvact"><button class="btn primary" id="pvpdf">PDF download</button><button class="btn" id="pvxl">Excel download</button><button class="btn" id="pvx">Close</button></div></div></div>
+<div class="toast" id="toast"></div>

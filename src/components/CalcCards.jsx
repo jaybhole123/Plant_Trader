@@ -6,7 +6,7 @@ export function CalcCards({ rep, visible, all }) {
   // visible can be called with (sec) directly
   const g = sec => (typeof visible === 'function' ? visible(sec) : []);
   const sub = (a, b) => (a == null || b == null ? null : a - b);
-  let K = [];
+  let K;
 
   if (rep === 'nandan') {
     const inc = cTot(g('incoming'), 0),

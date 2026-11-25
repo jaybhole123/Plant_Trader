@@ -3,23 +3,17 @@ import { REPORTS } from '../utils/constants';
 import Parser from '../utils/parser';
 
 export function EditRowModal({ isOpen, row, onClose, onSave, showToast }) {
-  const [rep, setRep] = useState('nandan');
-  const [sec, setSec] = useState('stock');
-  const [date, setDate] = useState('');
-  const [label, setLabel] = useState('');
-  const [vals, setVals] = useState([]);
-
-  useEffect(() => {
-    if (row) {
-      setRep(row.rep);
-      setSec(row.sec);
-      setDate(row.date);
-      setLabel(row.label || '');
-      setVals((row.vals || []).slice());
-    }
-  }, [row]);
-
   if (!isOpen || !row) return null;
+
+  return <EditRowForm row={row} onClose={onClose} onSave={onSave} showToast={showToast} />;
+}
+
+function EditRowForm({ row, onClose, onSave, showToast }) {
+  const [rep, setRep] = useState(row.rep || 'nandan');
+  const [sec, setSec] = useState(row.sec || 'stock');
+  const [date, setDate] = useState(row.date || '');
+  const [label, setLabel] = useState(row.label || '');
+  const [vals, setVals] = useState((row.vals || []).slice());
 
   const R = REPORTS[rep];
   const S = R && R.secs[sec] ? R.secs[sec] : { cols: [], t: '' };

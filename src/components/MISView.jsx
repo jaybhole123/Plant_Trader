@@ -96,18 +96,10 @@ export function MISView({ rows, showToast }) {
 
   const D = misData();
   const allDates = [...new Set(Object.values(D).flatMap(x => Object.keys(x)))].sort();
-
-  if (!allDates.length) {
-    return (
-      <div className="gap">
-        <b>No saved data yet.</b> Upload a PDF or add a manual entry on any plant page and click Save. This dashboard
-        reads only saved records.
-      </div>
-    );
-  }
+  const hasData = allDates.length > 0;
 
   const N = { daily: 1, weekly: 7, monthly: 30, quarterly: 90, yearly: 365 };
-  const anchor = allDates[allDates.length - 1];
+  const anchor = hasData ? allDates[allDates.length - 1] : '2026-01-01';
   let curFrom,
     curTo = anchor;
 
@@ -367,6 +359,15 @@ export function MISView({ rows, showToast }) {
       Object.values(chartInstances.current).forEach(c => c && c.destroy());
     };
   }, [curFrom, curTo, plant, reps.length]);
+
+  if (!hasData) {
+    return (
+      <div className="gap">
+        <b>No saved data yet.</b> Upload a PDF or add a manual entry on any plant page and click Save. This dashboard
+        reads only saved records.
+      </div>
+    );
+  }
 
   return (
     <div>

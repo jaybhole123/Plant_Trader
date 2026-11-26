@@ -16,6 +16,7 @@ import { extractPdf } from './utils/pdfReader';
 import { ofMeta, ofPut, ofGet, ofDel, ofKey } from './utils/storage';
 import { getSheetSpec, exportPdf, exportXlsx, addSheetPage } from './utils/sheetExport';
 import { fmtDate, fname, saveBlob } from './utils/formatters';
+import jsPDF from 'jspdf';
 
 export function App() {
   const [toastInfo, setToastInfo] = useState({ msg: '', isErr: false, on: false });
@@ -503,38 +504,33 @@ export function App() {
           if (previewState.origKey) {
             handleDownloadOriginalPdf(previewState.origKey);
           } else if (previewState.isCombined) {
-            // Build fresh combined doc and save natively to guarantee 100% valid PDF stream
             try {
               const d = previewState.date || currentDate;
               const reps = RORDER.filter(r => live().some(x => x.rep === r && x.date === d));
-              const jsPDFModule = window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null;
-              import('jspdf').then(({ default: jsPDFClass }) => {
-                const JClass = jsPDFClass || jsPDFModule;
-                const doc = new JClass({ orientation: 'portrait', unit: 'pt', format: 'a4' });
-                reps.forEach((r, i) => {
-                  if (i) doc.addPage();
-                  addSheetPage(doc, r, d, rowsOf, getNote);
-                });
-                const n = doc.getNumberOfPages(),
-                  W = doc.internal.pageSize.getWidth(),
-                  H = doc.internal.pageSize.getHeight();
-                for (let i = 1; i <= n; i++) {
-                  doc.setPage(i);
-                  doc.setFontSize(8);
-                  doc.setTextColor(110);
-                  doc.text(
-                    'All Plants Combined Report · ' + fmtDate(d) + ' · Page ' + i + ' of ' + n,
-                    W / 2,
-                    H - 10,
-                    { align: 'center' }
-                  );
-                }
-                doc.save('All_Plants_Combined_Report_' + d + '.pdf');
-                showToast('Downloading combined PDF · ' + reps.length + ' plants');
+              const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+              reps.forEach((r, i) => {
+                if (i) doc.addPage();
+                addSheetPage(doc, r, d, rowsOf, getNote);
               });
+              const n = doc.getNumberOfPages(),
+                W = doc.internal.pageSize.getWidth(),
+                H = doc.internal.pageSize.getHeight();
+              for (let i = 1; i <= n; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(110);
+                doc.text(
+                  'All Plants Combined Report · ' + fmtDate(d) + ' · Page ' + i + ' of ' + n,
+                  W / 2,
+                  H - 10,
+                  { align: 'center' }
+                );
+              }
+              doc.save('All_Plants_Combined_Report_' + d + '.pdf');
+              showToast('Downloading combined PDF · ' + reps.length + ' plants');
             } catch (err) {
               console.error(err);
-              showToast('Could not download combined PDF', true);
+              showToast('Could not download combined PDF: ' + (err.message || err), true);
             }
           } else if (previewState.rep) {
             handleDownloadPdf(previewState.rep, previewState.date);

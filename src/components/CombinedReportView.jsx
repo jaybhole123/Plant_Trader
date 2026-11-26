@@ -103,10 +103,11 @@ export function CombinedReportView({
           <table className="mt r">
             <thead>
               <tr>
-                <th style={{ width: '40px' }} />
+                <th style={{ width: '44px', textAlign: 'center' }} />
+                <th style={{ width: '130px' }}>Date</th>
                 <th>Plant</th>
-                <th>Status</th>
-                <th />
+                <th style={{ width: '180px' }}>Status</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -124,7 +125,10 @@ export function CombinedReportView({
                         aria-label={'Include ' + REPORTS[x.r].name}
                       />
                     </td>
-                    <td>{REPORTS[x.r].name}</td>
+                    <td style={{ whiteSpace: 'nowrap', fontWeight: 500, color: 'var(--muted, #64748b)' }}>
+                      {fmtDate(date)}
+                    </td>
+                    <td style={{ fontWeight: 600 }}>{REPORTS[x.r].name}</td>
                     <td>
                       {x.n ? (
                         <span className="tag hi">{x.n} rows ready</span>

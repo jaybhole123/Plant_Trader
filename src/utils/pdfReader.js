@@ -1,7 +1,7 @@
 import * as pdfjsLib from 'pdfjs-dist';
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+// Use unpkg / cdnjs worker matching pdfjs-dist version to guarantee smooth worker loading in Vite dev and production
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version || '4.10.38'}/build/pdf.worker.min.mjs`;
 
 import Parser from './parser';
 
@@ -18,3 +18,4 @@ export async function extractPdf(file) {
 }
 
 export { pdfjsLib };
+

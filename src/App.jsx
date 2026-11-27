@@ -401,6 +401,8 @@ export function App() {
               onDownload={handleDownloadPdf}
               tab={tab}
               setTab={setTab}
+              ofMeta={ofMeta}
+              onViewOrigPdf={handleViewOriginalPdf}
             />
           )}
 
@@ -435,6 +437,8 @@ export function App() {
               tab={tab}
               setTab={setTab}
               historyCount={historyCounts[page] || 0}
+              ofMeta={ofMeta}
+              onViewOrigPdf={handleViewOriginalPdf}
             />
           )}
 

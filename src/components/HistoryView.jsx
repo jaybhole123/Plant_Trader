@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import { RORDER, TITLES } from '../utils/constants';
 import { fmtHD } from '../utils/formatters';
+import { ofKey } from '../utils/storage';
 
-export function HistoryView({ rep, rows, onPreview, onDownload, tab, setTab, historyCount }) {
+export function HistoryView({
+  rep,
+  rows,
+  onPreview,
+  onDownload,
+  tab,
+  setTab,
+  historyCount,
+  ofMeta,
+  onViewOrigPdf
+}) {
   const [q, setQ] = useState('');
   const [plant, setPlant] = useState('');
   const [from, setFrom] = useState('');
@@ -157,26 +168,44 @@ export function HistoryView({ rep, rows, onPreview, onDownload, tab, setTab, his
                     <th>Date</th>
                     <th>Preview</th>
                     <th>Download</th>
+                    <th>Original PDF</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {list.map((x, i) => (
-                    <tr key={`${x.r}|${x.d}`}>
-                      <td>{i + 1}</td>
-                      <td>{TITLES[x.r]}</td>
-                      <td>{fmtHD(x.d)}</td>
-                      <td>
-                        <button className="btn sm" onClick={() => onPreview(x.r, x.d)}>
-                          Preview
-                        </button>
-                      </td>
-                      <td>
-                        <button className="btn sm primary" onClick={() => onDownload(x.r, x.d)}>
-                          Download
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {list.map((x, i) => {
+                    const k = ofKey(x.r, x.d);
+                    const hasOrig = !!(ofMeta && ofMeta[k]);
+                    return (
+                      <tr key={`${x.r}|${x.d}`}>
+                        <td>{i + 1}</td>
+                        <td>{TITLES[x.r]}</td>
+                        <td>{fmtHD(x.d)}</td>
+                        <td>
+                          <button className="btn sm" onClick={() => onPreview(x.r, x.d)}>
+                            Preview
+                          </button>
+                        </td>
+                        <td>
+                          <button className="btn sm primary" onClick={() => onDownload(x.r, x.d)}>
+                            Download
+                          </button>
+                        </td>
+                        <td>
+                          {hasOrig ? (
+                            <button
+                              className="btn sm"
+                              onClick={() => onViewOrigPdf && onViewOrigPdf(k)}
+                              title={ofMeta[k].name}
+                            >
+                              Original PDF
+                            </button>
+                          ) : (
+                            <span style={{ color: 'var(--muted)', fontSize: '12px' }}>—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
